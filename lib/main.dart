@@ -115,6 +115,8 @@ class _MyHomePageState extends State<MyHomePage> {
       }
       if (intArr.contains(_intSorted)) {
         _intSorted = rng.nextInt(76);
+      } else {
+        intArr.add(_intSorted);
       }
 
       if (_intSorted <= 15) {
