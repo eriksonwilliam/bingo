@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Bingo',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -22,9 +23,9 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.deepPurple,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Bingo'),
     );
   }
 }
@@ -48,7 +49,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String _sort = "";
+
+  var rng = new Random();
+
+  List<int> intArr = [];
 
   void _incrementCounter() {
     setState(() {
@@ -57,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
+      _sort = "A1";
     });
   }
 
@@ -96,20 +101,44 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'You have pushed the button this many times:',
+              'O Número sorteado é: ',
             ),
             Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              '$_sort',
+              style: Theme.of(context).textTheme.headline3,
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: _sortNumber,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void _sortNumber() {
+    setState(() {
+      int _intSorted = rng.nextInt(76);
+      if (_intSorted == 0) {
+        _intSorted = 1;
+      }
+      if (intArr.contains(_intSorted)) {
+        _intSorted = rng.nextInt(76);
+      }
+
+      if (_intSorted <= 15) {
+        _sort = "B - " + _intSorted.toString();
+      } else if (_intSorted > 15 && _intSorted <= 30) {
+        _sort = "I - " + _intSorted.toString();
+      } else if (_intSorted > 30 && _intSorted <= 45) {
+        _sort = "N - " + _intSorted.toString();
+      } else if (_intSorted > 46 && _intSorted <= 60) {
+        _sort = "G - " + _intSorted.toString();
+      } else if (_intSorted > 60 && _intSorted <= 75) {
+        _sort = "O - " + _intSorted.toString();
+      }
+    });
   }
 }
