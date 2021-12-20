@@ -51,6 +51,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String _sort = "";
 
+  String _bingo = "";
+
   var rng = new Random();
 
   List<int> intArr = [];
@@ -89,13 +91,20 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'O Número sorteado é: ',
-            ),
+            const Text('O Número sorteado é: '),
             Text(
               _sort,
               style: Theme.of(context).textTheme.headline3,
             ),
+            const Text('Os números já sorteados foram: '),
+            Text(
+              '$intArr',
+              style: Theme.of(context).textTheme.headline3,
+            ),
+            Text(
+              _bingo,
+              style: Theme.of(context).textTheme.headline3,
+            )
           ],
         ),
       ),
@@ -110,15 +119,19 @@ class _MyHomePageState extends State<MyHomePage> {
   void _sortNumber() {
     setState(() {
       int _intSorted = rng.nextInt(76);
+
       if (_intSorted == 0) {
         _intSorted = 1;
       }
-      if (intArr.contains(_intSorted)) {
+
+      while (intArr.contains(_intSorted)) {
         _intSorted = rng.nextInt(76);
-      } else {
-        intArr.add(_intSorted);
+        if (_intSorted == 0) {
+          _intSorted = 1;
+        }
       }
 
+      intArr.add(_intSorted);
       if (_intSorted <= 15) {
         _sort = "B - " + _intSorted.toString();
       } else if (_intSorted > 15 && _intSorted <= 30) {
@@ -129,6 +142,10 @@ class _MyHomePageState extends State<MyHomePage> {
         _sort = "G - " + _intSorted.toString();
       } else if (_intSorted > 60 && _intSorted <= 75) {
         _sort = "O - " + _intSorted.toString();
+      }
+
+      if (intArr.length == 75) {
+        _bingo = "BINGO.... U.U";
       }
     });
   }
